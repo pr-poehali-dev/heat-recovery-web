@@ -8,12 +8,14 @@ export default function CalculatorSection() {
   const [hours, setHours] = useState(5000);
 
   const cop = 3.8;
-  const gasThermal = 8.5;
-  const gasConsumption = (heatLoad * hours) / gasThermal;
-  const gasCost = gasConsumption * gasPrice;
+  // 1 м³ газа = ~10 кВт·ч тепловой энергии, КПД котла ~90%
+  const gasKwhPerM3 = 9.0;
+  const gasConsumptionM3 = (heatLoad * hours) / gasKwhPerM3;
+  const gasCost = gasConsumptionM3 * gasPrice;
   const electricConsumption = (heatLoad / cop) * hours;
   const electricCost = electricConsumption * electricPrice;
   const annualSaving = gasCost - electricCost;
+  const gasConsumption = gasConsumptionM3;
   const co2Saved = Math.round(gasConsumption * 2.04);
 
   return (

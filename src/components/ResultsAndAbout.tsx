@@ -20,17 +20,20 @@ function Results() {
             Экономия по годам, млн ₽
           </h3>
         </div>
-        <div className="flex items-end gap-3 h-48">
+        <div className="flex items-end gap-3">
           {data.map((d, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-2">
               <span className="text-[var(--c-green)] font-mono text-xs font-bold">{d.saving}</span>
-              <div
-                className="w-full rounded-t transition-all duration-700"
-                style={{
-                  height: `${(d.saving / maxSaving) * 100}%`,
-                  background: `linear-gradient(to top, var(--c-blue), var(--c-green))`,
-                }}
-              />
+              <div className="w-full" style={{ height: "160px", display: "flex", alignItems: "flex-end" }}>
+                <div
+                  className="w-full rounded-t transition-all duration-700"
+                  style={{
+                    height: `${(d.saving / maxSaving) * 100}%`,
+                    background: `linear-gradient(to top, var(--c-blue), var(--c-green))`,
+                    minHeight: "4px",
+                  }}
+                />
+              </div>
               <span className="text-[var(--c-muted)] font-mono text-xs">{d.year}</span>
             </div>
           ))}
