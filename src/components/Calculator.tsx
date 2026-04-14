@@ -197,6 +197,102 @@ export default function CalculatorSection() {
           </div>
         </div>
 
+        {/* Формулы */}
+        <div className="mt-10 card-panel p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-2 h-6 bg-[var(--c-blue)]" />
+            <h3 className="font-display text-xl text-white uppercase tracking-widest">
+              Формулы расчёта
+            </h3>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Газовый котёл */}
+            <div className="space-y-3">
+              <div className="text-xs text-[var(--c-muted)] font-mono uppercase tracking-widest mb-3">
+                Газовый котёл
+              </div>
+              <div className="bg-[var(--c-bg)] rounded-lg p-4 border border-[var(--c-border)] space-y-2">
+                <div className="font-mono text-sm">
+                  <span className="text-[var(--c-muted)]">Q</span>
+                  <span className="text-white"> = P × T</span>
+                </div>
+                <div className="text-xs text-[var(--c-muted)] font-mono">
+                  Q — тепло за год (кВт·ч) = мощность × часы
+                </div>
+              </div>
+              <div className="bg-[var(--c-bg)] rounded-lg p-4 border border-[var(--c-border)] space-y-2">
+                <div className="font-mono text-sm">
+                  <span className="text-[var(--c-muted)]">V</span>
+                  <span className="text-white"> = Q ÷ (q × η)</span>
+                </div>
+                <div className="text-xs text-[var(--c-muted)] font-mono">
+                  V — расход газа (м³), q = {GAS_KWH_PER_M3} кВт·ч/м³, η = {Math.round(BOILER_EFF * 100)}%
+                </div>
+              </div>
+              <div className="bg-[var(--c-bg)] rounded-lg p-4 border border-red-900/40 space-y-2">
+                <div className="font-mono text-sm">
+                  <span className="text-[var(--c-muted)]">C</span>
+                  <span className="text-red-400"> газ</span>
+                  <span className="text-white"> = V × P</span>
+                  <span className="text-[var(--c-muted)]">газ</span>
+                </div>
+                <div className="text-xs text-[var(--c-muted)] font-mono">
+                  Стоимость = расход × цена газа (₽/м³)
+                </div>
+              </div>
+            </div>
+
+            {/* Тепловой насос */}
+            <div className="space-y-3">
+              <div className="text-xs text-[var(--c-muted)] font-mono uppercase tracking-widest mb-3">
+                Тепловой насос
+              </div>
+              <div className="bg-[var(--c-bg)] rounded-lg p-4 border border-[var(--c-border)] space-y-2">
+                <div className="font-mono text-sm">
+                  <span className="text-[var(--c-muted)]">W</span>
+                  <span className="text-white"> = Q ÷ COP</span>
+                </div>
+                <div className="text-xs text-[var(--c-muted)] font-mono">
+                  W — потребление эл-ва (кВт·ч), COP = {COP}
+                </div>
+              </div>
+              <div className="bg-[var(--c-bg)] rounded-lg p-4 border border-[var(--c-border)] space-y-2">
+                <div className="font-mono text-sm">
+                  <span className="text-[var(--c-muted)]">COP</span>
+                  <span className="text-white"> = Q</span>
+                  <span className="text-[var(--c-muted)]">тепло</span>
+                  <span className="text-white"> ÷ W</span>
+                  <span className="text-[var(--c-muted)]">эл</span>
+                </div>
+                <div className="text-xs text-[var(--c-muted)] font-mono">
+                  На {COP} кВт·ч тепла расходуется 1 кВт·ч электричества
+                </div>
+              </div>
+              <div className="bg-[var(--c-bg)] rounded-lg p-4 border border-green-900/40 space-y-2">
+                <div className="font-mono text-sm">
+                  <span className="text-[var(--c-muted)]">C</span>
+                  <span className="text-[var(--c-green)]"> нас</span>
+                  <span className="text-white"> = W × P</span>
+                  <span className="text-[var(--c-muted)]">эл</span>
+                </div>
+                <div className="text-xs text-[var(--c-muted)] font-mono">
+                  Стоимость = потребление × цена эл-ва (₽/кВт·ч)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Итоговая формула */}
+          <div className="mt-5 bg-[var(--c-bg)] rounded-lg p-4 border border-[var(--c-blue-dim)] text-center">
+            <div className="font-mono text-base text-white">
+              Экономия = C<span className="text-red-400">газ</span> − C<span className="text-[var(--c-green)]">нас</span>
+              <span className="text-[var(--c-muted)] ml-4 text-sm">
+                = {fmt(gasCostRub / 1000)} − {fmt(hpCostRub / 1000)} = <span className={annualSaving > 0 ? "text-[var(--c-green)]" : "text-red-400"}>{fmt(annualSaving / 1000)} тыс. ₽</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
         <p className="text-center text-xs text-[var(--c-muted)] font-mono mt-6 opacity-60">
           * Расчёт ориентировочный. Теплотворность газа: {GAS_KWH_PER_M3} кВт·ч/м³, КПД котла: {Math.round(BOILER_EFF * 100)}%, COP насоса: {COP}.
         </p>
