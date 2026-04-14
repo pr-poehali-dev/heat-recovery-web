@@ -197,56 +197,40 @@ export default function CalculatorSection() {
           </div>
         </div>
 
-        {/* Живая формула */}
+        {/* Формула */}
         <div className="mt-6 card-panel p-5">
           <div className="text-xs text-[var(--c-muted)] font-mono uppercase tracking-widest mb-4">
-            Как считается
+            Формула расчёта
           </div>
-          <div className="space-y-3 font-mono text-sm leading-relaxed">
-            {/* Тепло */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="text-[var(--c-muted)]">Тепло/год</span>
-              <span className="text-white">=</span>
-              <span className="text-[var(--c-blue)]">{heatLoad} кВт</span>
-              <span className="text-[var(--c-muted)]">×</span>
-              <span className="text-[var(--c-blue)]">{hoursPerYear} ч</span>
-              <span className="text-white">=</span>
-              <span className="text-white font-bold">{fmt(totalHeatKwh)} кВт·ч</span>
+          {/* Формула через обозначения */}
+          <div className="bg-[var(--c-bg)] rounded-lg px-5 py-4 border border-[var(--c-border)] mb-4 overflow-x-auto">
+            <div className="font-mono text-sm text-white whitespace-nowrap">
+              <span className="text-[var(--c-green)] font-bold">Э</span>
+              <span className="text-[var(--c-muted)]"> = </span>
+              <span className="text-white">( P × T ) ÷ ( q × η ) × C</span>
+              <sub className="text-[var(--c-muted)]">г</sub>
+              <span className="text-[var(--c-muted)]"> − </span>
+              <span className="text-white">( P × T ) ÷ COP × C</span>
+              <sub className="text-[var(--c-muted)]">э</sub>
             </div>
-            {/* Газ */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="text-[var(--c-muted)]">Затраты (газ)</span>
-              <span className="text-white">=</span>
-              <span className="text-white">{fmt(totalHeatKwh)} кВт·ч</span>
-              <span className="text-[var(--c-muted)]">÷ ({GAS_KWH_PER_M3} × {BOILER_EFF})</span>
-              <span className="text-[var(--c-muted)]">×</span>
-              <span className="text-[var(--c-blue)]">{gasPrice} ₽/м³</span>
-              <span className="text-white">=</span>
-              <span className="text-red-400 font-bold">{fmt(gasCostRub / 1000)} тыс. ₽</span>
-            </div>
-            {/* Насос */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="text-[var(--c-muted)]">Затраты (насос)</span>
-              <span className="text-white">=</span>
-              <span className="text-white">{fmt(totalHeatKwh)} кВт·ч</span>
-              <span className="text-[var(--c-muted)]">÷ {COP}</span>
-              <span className="text-[var(--c-muted)]">×</span>
-              <span className="text-[var(--c-blue)]">{electricPrice} ₽/кВт·ч</span>
-              <span className="text-white">=</span>
-              <span className="text-[var(--c-green)] font-bold">{fmt(hpCostRub / 1000)} тыс. ₽</span>
-            </div>
-            {/* Итог */}
-            <div className="pt-2 border-t border-[var(--c-border)] flex flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="text-[var(--c-muted)]">Экономия</span>
-              <span className="text-white">=</span>
-              <span className="text-red-400">{fmt(gasCostRub / 1000)}</span>
-              <span className="text-[var(--c-muted)]">−</span>
-              <span className="text-[var(--c-green)]">{fmt(hpCostRub / 1000)}</span>
-              <span className="text-white">=</span>
-              <span className={`font-bold text-base ${annualSaving > 0 ? "text-[var(--c-green)]" : "text-red-400"}`}>
-                {fmt(annualSaving / 1000)} тыс. ₽ / год
-              </span>
-            </div>
+          </div>
+          {/* Легенда */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {[
+              { sym: "Э", desc: "годовая экономия, ₽" },
+              { sym: "P", desc: "тепловая мощность, кВт" },
+              { sym: "T", desc: "часов работы в год, ч" },
+              { sym: "q = " + GAS_KWH_PER_M3, desc: "теплотворность газа, кВт·ч/м³" },
+              { sym: "η = " + BOILER_EFF, desc: "КПД газового котла" },
+              { sym: "COP = " + COP, desc: "эффективность теплового насоса" },
+              { sym: "Cг", desc: "цена газа, ₽/м³" },
+              { sym: "Cэ", desc: "цена электричества, ₽/кВт·ч" },
+            ].map(({ sym, desc }) => (
+              <div key={sym} className="flex items-baseline gap-2">
+                <span className="font-mono text-[var(--c-blue)] text-sm shrink-0">{sym}</span>
+                <span className="text-xs text-[var(--c-muted)] font-mono">— {desc}</span>
+              </div>
+            ))}
           </div>
         </div>
 
